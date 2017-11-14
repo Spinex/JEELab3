@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+    <f:metadata>
+        <f:viewParam name="wizardId" value="#{editWizard.wizard}" converter="#{wizardConverter}"/>
+        <f:event type="preRenderView" listener="#{editWizard.init()}"/>
+    </f:metadata>
+
+    <ui:define name="head">
+        <title>#{editWizard.wizard.name}</title>
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:form id="form">
+            <h:panelGrid columns="3">
+                <h:outputLabel value="#{msg.name}:" for="name"/>
+                <h:inputText id="name" value="#{editWizard.wizard.name}"/>
+                <h:message for="name"/>
+
+                <h:outputLabel value="#{msg.mana}:" for="mana"/>
+                <h:inputText id="mana" value="#{editWizard.wizard.mana}"/>
+                <h:message for="mana"/>
+
+                <h:outputLabel value="#{msg.tower}:" for="tower"/>
+                <h:selectOneListbox id="tower" value="#{editWizard.wizard.tower}" converter="#{towerConverter}">
+                    <f:selectItems value="#{editWizard.availableTowers}" var="tower" itemValue="#{tower}"
+                                   itemLabel="Wieza wys. #{tower.height} m"/>
+                </h:selectOneListbox>
+                <h:message for="tower"/>
+
+                <h:outputLabel value="#{msg.magicElement}:" for="magicElement"/>
+                <h:selectOneMenu id="magicElement" value="#{editWizard.wizard.magicElement}">
+                    <f:selectItems value="#{editWizard.magicElementTypes}" var="magicElement" itemValue="#{magicElement}"
+                                   itemLabel="#{magicElement.name()}"/>
+                </h:selectOneMenu>
+                <h:message for="magicElement"/>
+
+            </h:panelGrid>
+            <br/>
+            <h:commandButton value="#{msg.save}" action="#{editWizard.saveWizard()}"/>
+        </h:form>
+        <h:button value="#{msg.back}" outcome="list_wizards.xhtml"/>
+    </ui:define>
+</ui:composition>

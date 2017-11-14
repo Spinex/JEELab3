@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/templates/main.xhtml">
+
+    <ui:define name="head">
+        <title>#{msg.wizards}</title>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:dataTable value="#{listWizards.towers}" var="tower">
+            <h:column>
+                <h:outputText value="Wieża #{tower.height} m" />
+            </h:column>
+
+            <h:column>
+                <h:button value="Edytuj" outcome="edit_tower.xhtml">
+                    <f:param name="towerId" value="#{tower.id}" />
+                </h:button>
+            </h:column>
+
+            <h:column>
+                <h:form>
+                    <h:commandButton value="Usuń"
+                                     action="#{listWizards.removeTower(tower)}"/>
+                </h:form>
+            </h:column>
+
+            <h:column>
+                <h:dataTable value="#{listWizards.getWizardsByTower(tower)}" var="wizard">
+                    <h:column>
+                        <f:facet name="header"><h:outputText value="ID"/></f:facet>
+                        <h:outputText value="#{wizard.id}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"><h:outputText value="#{msg.name}"/></f:facet>
+                        <h:outputText value="#{wizard.name}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"><h:outputText value="#{msg.tower}"/></f:facet>
+                        <h:outputText value="Wieza wys. #{wizard.tower.height} m"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"><h:outputText value="#{msg.view}"/></f:facet>
+                        <h:button value="#{msg.view}" outcome="view_wizard.xhtml">
+                            <f:param name="wizard" value="#{wizard.id}"/>
+                        </h:button>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"><h:outputText value="#{msg.edit}"/></f:facet>
+                        <h:button value="#{msg.edit}" outcome="edit_wizard.xhtml">
+                            <f:param name="wizardId" value="#{wizard.id}"/>
+                        </h:button>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"><h:outputText value="#{msg.remove}"/></f:facet>
+                        <h:form>
+                            <h:commandButton value="#{msg.remove}" action="#{listWizards.removeWizard(wizard)}"/>
+                        </h:form>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"><h:outputText value="#{msg.modificationDate}"/></f:facet>
+                        <h:form>
+                            <h:outputText value="#{wizard.modificationDate}">
+                                <f:convertDateTime pattern="yyyy-MM-dd HH:mm"/>
+                            </h:outputText>
+                        </h:form>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"><h:outputText value="#{msg.version}"/></f:facet>
+                        <h:outputText value="#{wizard.version}"/>
+                    </h:column>
+                </h:dataTable>
+            </h:column>
+        </h:dataTable>
+        <h:button value="#{msg.newWizard}" outcome="edit_wizard.xhtml"/><br/>
+        <h:button value="#{msg.newTower}" outcome="edit_tower.xhtml"/><br/>
+        <h:button value="#{msg.back}" outcome="index.xhtml"/>
+    </ui:define>
+
+</ui:composition>
